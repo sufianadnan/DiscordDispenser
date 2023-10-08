@@ -29,17 +29,23 @@ bot = commands.Bot(command_prefix=PREFIX, intents=intents)
 bot.remove_command("help")
 
 # Load messages from file into a list
+
+
 def load_messages():
     with open(accounts_file, "r") as f:
         messages = [line.strip() for line in f.readlines()]
     return messages
 
 # Save messages back to file
+
+
 def save_messages(messages):
     with open(accounts_file, "w") as f:
         f.write("\n".join(messages))
 
 # Check if user has already used the command within the last 24 hours
+
+
 def check_cooldown(user_id):
     with open("cooldown.txt", "r") as f:
         cooldowns = [line.strip().split(",") for line in f.readlines()]
@@ -50,7 +56,8 @@ def check_cooldown(user_id):
             else:
                 cooldown[1] = str(int(time.time()))
                 with open("cooldown.txt", "w") as f:
-                    f.write("\n".join([",".join(cooldown) for cooldown in cooldowns]))
+                    f.write("\n".join([",".join(cooldown)
+                            for cooldown in cooldowns]))
                 return True
     cooldowns.append([str(user_id), str(int(time.time()))])
     with open("cooldown.txt", "w") as f:
@@ -58,12 +65,16 @@ def check_cooldown(user_id):
     return True
 
 # Check if there are enough messages in the file
+
+
 def check_stock():
     with open(accounts_file, "r") as f:
         messages = [line.strip() for line in f.readlines()]
     if len(messages) < 5:
         return False
     return True
+
+
 @bot.command(help="This command you just ran")
 async def help(ctx):
     embed = discord.Embed(
@@ -86,6 +97,8 @@ async def help(ctx):
 send_messages_queue = []
 
 # Send a DM to the user with 5 random messages from the file
+
+
 @bot.command(name=COMMANDNAME, help="Sends 5 Mails to your DM.")
 @commands.has_role(ROLE)
 async def dynamic_command(ctx):
@@ -105,10 +118,14 @@ async def dynamic_command(ctx):
     await ctx.reply("sent in DMs!")
 
 # Save sent messages back to file
+
+
 def save_sent_messages(messages):
     with open(SENT_MESSAGES_FILE, "w") as f:
         f.write("\n".join(messages))
 # Check stock every hour and send notification if it's low
+
+
 @tasks.loop(hours=2)
 async def check_stock_loop():
     if not check_stock():
@@ -116,10 +133,11 @@ async def check_stock_loop():
         await owner.send("Stock is low!")
         await owner.send(file=discord.File(accounts_file))
 
+
 @bot.event
 async def on_ready():
     print("Bot is ready.")
-    await bot.change_presence(activity=discord.Game(name="Managing Inventory - AdnanV2#3596"))
+    await bot.change_presence(activity=discord.Game(name="DiscordDispender"))
 
     check_stock_loop.start()
 
