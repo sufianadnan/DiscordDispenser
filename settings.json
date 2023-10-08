@@ -1,0 +1,8 @@
+{
+    "TOKEN": "BOTTOKENHERE",
+    "ROLE": "THE ROLE YOU WANT TO LOCK IT TO ",
+    "SENT_MESSAGES_FILE": "dumpinggrounds.txt",
+    "PREFIX": "?",
+    "OWNER_ID": "YOUR DISCORD ID NUMBER",
+    "COMMAND": "THE COMMAND YOU WANT IT TO BE(mail is good)"
+}
